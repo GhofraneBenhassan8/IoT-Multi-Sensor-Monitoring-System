@@ -9,9 +9,36 @@ This project implements a hierarchical IoT architecture that captures environmen
 ### System Architecture
 
 ```
-Arduino Nano 33 BLE ──[BLE]──> Raspberry Pi 4 ──[MQTT]──> InfluxDB
-                                      │
-                                      └──[HTTP]──> Node-RED Dashboard
+┌─────────────────────────────────┐
+                    │     Raspberry Pi 4 (Gateway)    │
+                    │                                 │
+Arduino Nano 33 BLE │  ┌─────────────────────────┐   │
+    (Sensors)       │  │  ble_to_mqtt_.py        │   │
+        │           │  │  (BLE → MQTT Bridge)    │   │
+        │           │  └──────────┬──────────────┘   │
+        └──[BLE]───────────────►  │                  │
+                    │              ▼                  │
+                    │  ┌─────────────────────────┐   │
+                    │  │  Mosquitto MQTT Broker  │   │
+                    │  └──────────┬──────────────┘   │
+                    │             │                   │
+                    │     ┌───────┴────────┐          │
+                    │     │                │          │
+                    │     ▼                ▼          │
+                    │  [MQTT]           [MQTT]        │
+                    │     │                │          │
+                    │     ▼                ▼          │
+                    │ ┌─────────┐    ┌──────────┐    │
+                    │ │Node-RED │    │ InfluxDB │    │
+                    │ │Dashboard│◄───┤ Database │    │
+                    │ └────┬────┘    └──────────┘    │
+                    └──────┼──────────────────────────┘
+                           │
+                           ▼
+                        [HTTP]
+                           │
+                    User Browser
+               http://192.168.1.39:1880/ui
 ```
 
 ## Hardware Components
@@ -81,7 +108,7 @@ Arduino Nano 33 BLE ──[BLE]──> Raspberry Pi 4 ──[MQTT]──> Influx
    - Arduino_BMI270_BMM150
    - Arduino_HS300x
    - Arduino_LPS22HB
-4. Upload `lecture_et_envoi_des_capteurs.ino` to your Arduino Nano 33 BLE
+4. Upload `lecture_et_envoi_ble.ino` to your Arduino Nano 33 BLE
 
 ### 2. Raspberry Pi Setup
 
