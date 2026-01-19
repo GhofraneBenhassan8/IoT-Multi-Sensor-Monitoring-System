@@ -1,0 +1,14 @@
+# Python Requirements for BLE to MQTT Bridge
+# Raspberry Pi 4 - IoT Gateway
+
+# BLE Communication
+bleak==0.21.1
+
+# MQTT Client
+paho-mqtt==1.6.1
+
+# Optional: For better async support
+asyncio==3.4.3
+
+# System dependencies (install via apt):
+# sudo apt install -y python3-pip python3-dev libbluetooth-dev
